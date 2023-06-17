@@ -14,6 +14,11 @@ public class WheelsController : MonoBehaviour
     [SerializeField] private Transform rearRightTransform;
     [SerializeField] private Transform rearLeftTransform;
 
+    [Header("Physics")]
+    [SerializeField] private Transform centerOfMass;
+
+    private Rigidbody rb;
+
     [Header("Car Settings")]
     public float acceleration = 500;
     public float breakingForce = 300;
@@ -27,6 +32,14 @@ public class WheelsController : MonoBehaviour
     private float currentAcceleration;
     private float currentBreakingForce;
     private float currentTurnAngle;
+
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+
+        rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = centerOfMass.localPosition;
+    }
 
 
     private void FixedUpdate()
@@ -58,10 +71,10 @@ public class WheelsController : MonoBehaviour
         frontLeftCol.steerAngle  = currentTurnAngle;
         frontRightCol.steerAngle = currentTurnAngle;
 
-        //UpdateWheels( frontLeftCol , frontLeftTransform );
-        //UpdateWheels( frontRightCol , frontRightTransform );
-        //UpdateWheels( rearLeftCol , rearLeftTransform );
-        //UpdateWheels( rearRightCol , rearRightTransform );
+        UpdateWheels( frontLeftCol , frontLeftTransform );
+        UpdateWheels( frontRightCol , frontRightTransform );
+        UpdateWheels( rearLeftCol , rearLeftTransform );
+        UpdateWheels( rearRightCol , rearRightTransform );
     }
 
     private void UpdateWheels( WheelCollider col , Transform trans )
